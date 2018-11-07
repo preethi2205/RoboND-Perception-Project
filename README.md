@@ -1,21 +1,21 @@
 [//]: # (Image References)
 
 [imageRobot]: ./Pictures/imageRobot.png
-[imageRawCameraOutput]: ./Pictures/imageRawCameraOutput.png
-[imageStatisticalOutlierFilter]: ./Pictures/imageStatisticalOutlierFilter.png
-[imageVoxelAndPassThroughOutput]: ./Pictures/imageVoxelAndPassThroughOutput.png
-[imageObjectsOutput]: ./Pictures/imageObjectsOutput.png
-[imageTableOutput]: ./Pictures/imageTableOutput.png
-[imageClusteringOutput]: ./Pictures/imageClusteringOutput.png
+[imageRawCameraOutput]: ./Pictures/imageRawCameraOutput.PNG
+[imageStatisticalOutlierFilter]: ./Pictures/imageStatisticalOutlierFilter.PNG
+[imageVoxelAndPassThroughOutput]: ./Pictures/imageVoxelAndPassThroughOutput.PNG
+[imageObjectsOutput]: ./Pictures/imageObjectsOutput.PNG
+[imageTableOutput]: ./Pictures/imageTableOutput.PNG
+[imageClusteringOutput]: ./Pictures/imageClusteringOutput.PNG
 [CountConfMatrix1]: ./Pictures/CountConfMatrix1.png
 [CountConfMatrix2]: ./Pictures/CountConfMatrix2.png
 [CountConfMatrix3]: ./Pictures/CountConfMatrix3.png
 [NormConfMatrix1]: ./Pictures/NormConfMatrix1.png
 [NormConfMatrix2]: ./Pictures/NormConfMatrix2.png
 [NormConfMatrix3]: ./Pictures/NormConfMatrix3.png
-[imageFinalOutputScene3]: ./Pictures/imageFinalOutputScene3.png
-[imagePublishersSubscribers]: ./Pictures/imagePublishersSubscribers.png
-[imagePCLCallback]: ./Pictures/imagePCLCallback.png
+[imageFinalOutputScene3]: ./Pictures/imageFinalOutputScene3.PNG
+[imagePublishersSubscribers]: ./Pictures/imagePublishersSubscribers.PNG
+[imagePCLCallback]: ./Pictures/imagePCLCallback.PNG
 
 ## Project: 3D Perception
 ### The why? 
@@ -123,11 +123,11 @@ The following are some suggestions to improve this pipeline:
 
 #### Source code for the project
 
-1. [Launch file for the project](../blob/master/pr2_robot/launch/pick_place_project.launch)
-2. [The perception pipeline](../blob/master/pr2_robot/scripts/project_template.py)
-3. [Launch file for the SVM training](../blob/master/sensor_stick/launch/training.launch)
-4. [The script used to capture training features for the SVM](../blob/master/sensor_stick/scripts/capture_features.py)
-5. [The script used to train the SVM](../blob/master/sensor_stick/scripts/train_svm.py)
-6. [The output YAML for scene 1](../blob/master/output_1.yaml)
-7. [The output YAML for scene 2](../blob/master/output_2.yaml)
-8. [The output YAML for scene 3](../blob/master/output_3.yaml)
+1. [Launch file for the project](./pr2_robot/launch/pick_place_project.launch)
+2. [The perception pipeline](./pr2_robot/scripts/project_template.py)
+3. [Launch file for the SVM training](./sensor_stick/launch/training.launch)
+4. [The script used to capture training features for the SVM](./sensor_stick/scripts/capture_features.py)
+5. [The script used to train the SVM](./sensor_stick/scripts/train_svm.py)
+6. [The output YAML for scene 1](./output_1.yaml)
+7. [The output YAML for scene 2](./output_2.yaml)
+8. [The output YAML for scene 3](./output_3.yaml)
