@@ -1,21 +1,21 @@
 [//]: # (Image References)
 
 [imageRobot]: ./Pictures/imageRobot.png
-[imageRawCameraOutput]: ./Pictures/imageRawCameraOutput.png
-[imageStatisticalOutlierFilter]: ./Pictures/imageStatisticalOutlierFilter.png
-[imageVoxelAndPassThroughOutput]: ./Pictures/imageVoxelAndPassThroughOutput.png
-[imageObjectsOutput]: ./Pictures/imageObjectsOutput.png
-[imageTableOutput]: ./Pictures/imageTableOutput.png
-[imageClusteringOutput]: ./Pictures/imageClusteringOutput.png
+[imageRawCameraOutput]: ./Pictures/imageRawCameraOutput.PNG
+[imageStatisticalOutlierFilter]: ./Pictures/imageStatisticalOutlierFilter.PNG
+[imageVoxelAndPassThroughOutput]: ./Pictures/imageVoxelAndPassThroughOutput.PNG
+[imageObjectsOutput]: ./Pictures/imageObjectsOutput.PNG
+[imageTableOutput]: ./Pictures/imageTableOutput.PNG
+[imageClusteringOutput]: ./Pictures/imageClusteringOutput.PNG
 [CountConfMatrix1]: ./Pictures/CountConfMatrix1.png
 [CountConfMatrix2]: ./Pictures/CountConfMatrix2.png
 [CountConfMatrix3]: ./Pictures/CountConfFinal.png
 [NormConfMatrix1]: ./Pictures/NormConfMatrix1.png
 [NormConfMatrix2]: ./Pictures/NormConfMatrix2.png
 [NormConfMatrix3]: ./Pictures/NormConfFinal.png
-[imageFinalOutputScene3]: ./Pictures/imageFinalOutputScene3.png
-[imagePublishersSubscribers]: ./Pictures/imagePublishersSubscribers.png
-[imagePCLCallback]: ./Pictures/imagePCLCallback.png
+[imageFinalOutputScene3]: ./Pictures/imageFinalOutputScene3.PNG
+[imagePublishersSubscribers]: ./Pictures/imagePublishersSubscribers.PNG
+[imagePCLCallback]: ./Pictures/imagePCLCallback.PNG
 [imageOutputScene1]: ./Pictures/Capture1.PNG
 [imageOutputScene2]: ./Pictures/Capture2.PNG
 [imageOutputScene3]: ./Pictures/Capture3.PNG
@@ -92,7 +92,7 @@ We use the trained SVM model to predict the object type in the perception pipeli
 ![alt text][imageOutputScene2]
 ![alt text][imageOutputScene3]
 
-In scene 1 and 2, the model predicts the objects accurately. In scene 3, the glue is not recognized. This could be because it is hidden behind the notebook, and is difficult for the camera to pick it up accurately. Another problem is that the biscuit sometimes get misclassified as glue. This could be an indication that the model is starting to overfit to biscuits, and can be improved by reducing the number of histogram bins used to generate the training features.
+As it can be seen from the output, most of the objects are identified correctly. The only misread is the biscuits from scene 2, which gets recognized as glue. This could be an indication that the model is starting to overfit to biscuits, and can be improved by reducing the number of histogram bins used to generate the training features.
 
 #### 6. Output the centroid data
 We have now completed the perception pipeline that can be used for a succesful pick and place project. The final step in this project is to output each object's type and centroid to a "YAML" format file. This YAML file is then used by the pick and place service to complete the pick and place operation. The output YAML files for the three test scenes can be found in the project repository. The centroid for each object is calculated as the mean position of all the pixels that belong to that object.
@@ -104,7 +104,7 @@ Scene 1: 100%
 
 Scene 2: 80%
 
-Scene 3: 87.5%
+Scene 3: 100%
 
 The following are some suggestions to improve this pipeline:
 
@@ -115,11 +115,11 @@ The following are some suggestions to improve this pipeline:
 
 #### Source code for the project
 
-1. [Launch file for the project](../blob/master/pr2_robot/launch/pick_place_project.launch)
-2. [The perception pipeline](../blob/master/pr2_robot/scripts/project_template.py)
-3. [Launch file for the SVM training](../blob/master/sensor_stick/launch/training.launch)
-4. [The script used to capture training features for the SVM](../blob/master/sensor_stick/scripts/capture_features.py)
-5. [The script used to train the SVM](../blob/master/sensor_stick/scripts/train_svm.py)
-6. [The output YAML for scene 1](../blob/master/output_1.yaml)
-7. [The output YAML for scene 2](../blob/master/output_2.yaml)
-8. [The output YAML for scene 3](../blob/master/output_3.yaml)
+1. [Launch file for the project](./pr2_robot/launch/pick_place_project.launch)
+2. [The perception pipeline](./pr2_robot/scripts/project_template.py)
+3. [Launch file for the SVM training](./sensor_stick/launch/training.launch)
+4. [The script used to capture training features for the SVM](./sensor_stick/scripts/capture_features.py)
+5. [The script used to train the SVM](./sensor_stick/scripts/train_svm.py)
+6. [The output YAML for scene 1](./output_1.yaml)
+7. [The output YAML for scene 2](./output_2.yaml)
+8. [The output YAML for scene 3](./output_3.yaml)
