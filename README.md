@@ -9,14 +9,16 @@
 [imageClusteringOutput]: ./Pictures/imageClusteringOutput.png
 [CountConfMatrix1]: ./Pictures/CountConfMatrix1.png
 [CountConfMatrix2]: ./Pictures/CountConfMatrix2.png
-[CountConfMatrix3]: ./Pictures/CountConfMatrix3.png
+[CountConfMatrix3]: ./Pictures/CountConfFinal.png
 [NormConfMatrix1]: ./Pictures/NormConfMatrix1.png
 [NormConfMatrix2]: ./Pictures/NormConfMatrix2.png
-[NormConfMatrix3]: ./Pictures/NormConfMatrix3.png
+[NormConfMatrix3]: ./Pictures/NormConfFinal.png
 [imageFinalOutputScene3]: ./Pictures/imageFinalOutputScene3.png
 [imagePublishersSubscribers]: ./Pictures/imagePublishersSubscribers.png
 [imagePCLCallback]: ./Pictures/imagePCLCallback.png
-
+[imageOutputScene1]: ./Pictures/Capture1.PNG
+[imageOutputScene2]: ./Pictures/Capture2.PNG
+[imageOutputScene3]: ./Pictures/Capture3.PNG
 ## Project: 3D Perception
 ### The why? 
 This project is meant is meant to give an in-depth understanding of how a basic perception pipeline can be built for a standard industrial robot. 
@@ -73,34 +75,24 @@ We now have the pixels corresponding to the area that contain the objects of int
 At this point, we have successfully identified the pixels that belong to each object. The next step is to identify what that object is. In order to recognize the object, we will use sample images of each object to train an SVM. We will then use the trained model to predict the object type.
 
 ##### Step 1: Collect the training data
-We run a training simulation to collect sample images of each object as seen by the camera. Each sample image is spawned at a different orientation in order to provide the SVM with as much information as possible. A set of training features are extracted from each image. These features are the inputs to the SVM and they provide relevant information about the shape and color of each object. The features include a color histogram of the HSV channel and a histogram of the normal vectors of each object surface. The HSV channel is used to obtain the color histogram, instead of the RGB channel. This is because the HSV channel information is typically insensitive to lighting conditions, thus resulting in better information about the object. In total, 50 images were used to train each object in scene 1. 125 images per object were used in scene 2. 175 images per object were used in scene 3. 
+We run a training simulation to collect sample images of each object as seen by the camera. Each sample image is spawned at a different orientation in order to provide the SVM with as much information as possible. A set of training features are extracted from each image. These features are the inputs to the SVM and they provide relevant information about the shape and color of each object. The features include a color histogram of the HSV channel and a histogram of the normal vectors of each object surface. The HSV channel is used to obtain the color histogram, instead of the RGB channel. This is because the HSV channel information is typically insensitive to lighting conditions, thus resulting in better information about the object. In total 175 samples per object were used for the training.
 
 ##### Step 2: Train the SVM
-The collected features are then used to train the SVM to predict the objects. We use a linear kernel for this project. The pipeline is tested on three setups, each one progressively complicated than the previous. The confusion matrices for all the scenarios are given below. They represent the output of the SVM's validation:
+The collected features are then used to train the SVM to predict the objects. We use a linear kernel for this project. The pipeline is tested on three setups, each one progressively complicated than the previous. The normalized and count-based confusion matrix for the trained model is given below. They represent the output of the SVM's validation:
 
-##### Scene1
-![alt text][CountConfMatrix1]
-![alt text][NormConfMatrix1]
-
-##### Scene2
-![alt text][CountConfMatrix2]
-![alt text][NormConfMatrix2]
-
-##### Scene3
 ![alt text][CountConfMatrix3]
 ![alt text][NormConfMatrix3]
 
-The accuracy of the trained SVM is as follows:
-Scene 1: 93.3%
-Scene 2: 94.4%
-Scene 3: 95.5%
+The trained SVM model has an accuracy of about 96%.
 
 ##### Step 3: Predict using the SVM
-We use the trained SVM model to predict the object type in the perception pipeline. Labels are attached to each predicted object and are displayed in the image for visualization. Here's the result of prediction for scene 3, which is the toughest scene we tested:
+We use the trained SVM model to predict the object type in the perception pipeline. Labels are attached to each predicted object and are displayed in the image for visualization. Here's the result of prediction for all three scenes:
 
-![alt text][imageFinalOutputScene3]
+![alt text][imageOutputScene1]
+![alt text][imageOutputScene2]
+![alt text][imageOutputScene3]
 
-In this image, 6/8 objects are classified right. The glue is misclassified as soap, and the book is not recognized. Please see the section about improvements for further suggestions on how to improve the pipeline.
+In scene 1 and 2, the model predicts the objects accurately. In scene 3, the glue is not recognized. This could be because it is hidden behind the notebook, and is difficult for the camera to pick it up accurately. Another problem is that the biscuit sometimes get misclassified as glue. This could be an indication that the model is starting to overfit to biscuits, and can be improved by reducing the number of histogram bins used to generate the training features.
 
 #### 6. Output the centroid data
 We have now completed the perception pipeline that can be used for a succesful pick and place project. The final step in this project is to output each object's type and centroid to a "YAML" format file. This YAML file is then used by the pick and place service to complete the pick and place operation. The output YAML files for the three test scenes can be found in the project repository. The centroid for each object is calculated as the mean position of all the pixels that belong to that object.
@@ -112,12 +104,12 @@ Scene 1: 100%
 
 Scene 2: 80%
 
-Scene 3: 75%
+Scene 3: 87.5%
 
 The following are some suggestions to improve this pipeline:
 
 1. The pipeline seems to have a tougher time with crowded scenes. Better clustering algorithms could be explored to alleviate this.
-2. The number of features used to train the SVM plays a major part in the SVM's prediction accuracy. A histogram with 32 bins was used to train the SVM for scene 1 and 2. A histogram with 128 bins was used for scene 3. While more objects were recognized in scene 3, it can be seen that the glue was mis-recognized as a soap. This indicates that the SVM is trending towards over fitting, and hence the number of histogram bins could be reduced. Playing around with the number of histogram bins for the color and noraml histograms would lead to better SVM predictions.
+2. The number of features used to train the SVM plays a major part in the SVM's prediction accuracy. A histogram with 85 bins was used to train the SVM. While most objects were recognized all the scenes, it can be seen that the biscuit was mis-recognized as glue in scene 2. This indicates that the SVM is trending towards over fitting, and hence the number of histogram bins could be reduced. Playing around with the number of histogram bins for the color and noraml histograms would lead to better SVM predictions.
 3. The SVM was fit to a linear kernel. A more complex kernel, such as the RBF (Radial Basis Function) could lead to better predictions.
 4. Finally, the project can be improved by actually passing the required output to the pick and place service, there by completing the pick and place operation. There are some additional steps involved in this, such as making sure that the robot does not think of the objects as collision points. 
 

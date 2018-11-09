@@ -34,9 +34,9 @@ def compute_color_histograms(cloud, using_hsv=False):
         channel_3_vals.append(color[2])
     
     # TODO: Compute histograms
-    ch_1_hist = np.histogram(channel_1_vals, bins=128, range=(0,256));
-    ch_2_hist = np.histogram(channel_2_vals, bins=128, range=(0,256));
-    ch_3_hist = np.histogram(channel_3_vals, bins=128, range=(0,256));
+    ch_1_hist = np.histogram(channel_1_vals, bins=85, range=(0,256));
+    ch_2_hist = np.histogram(channel_2_vals, bins=85, range=(0,256));
+    ch_3_hist = np.histogram(channel_3_vals, bins=85, range=(0,256));
 
 
     # TODO: Concatenate and normalize the histograms
@@ -60,9 +60,9 @@ def compute_normal_histograms(normal_cloud):
         norm_z_vals.append(norm_component[2])
 
     # TODO: Compute histograms of normal values (just like with color)
-    ch_1_hist = np.histogram(norm_x_vals, bins=128, range=(np.min(norm_component[0]),np.max(norm_component[0])));
-    ch_2_hist = np.histogram(norm_y_vals, bins=128, range=(np.min(norm_component[1]),np.max(norm_component[1])));
-    ch_3_hist = np.histogram(norm_z_vals, bins=128, range=(np.min(norm_component[2]),np.max(norm_component[2])));
+    ch_1_hist = np.histogram(norm_x_vals, bins=85, range=(np.min(norm_component[0]),np.max(norm_component[0])));
+    ch_2_hist = np.histogram(norm_y_vals, bins=85, range=(np.min(norm_component[1]),np.max(norm_component[1])));
+    ch_3_hist = np.histogram(norm_z_vals, bins=85, range=(np.min(norm_component[2]),np.max(norm_component[2])));
 
 
     # TODO: Concatenate and normalize the histograms

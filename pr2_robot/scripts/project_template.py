@@ -59,7 +59,7 @@ def pcl_callback(pcl_msg):
 
     # TODO: Outlier filter
     outlier_filter = cloud.make_statistical_outlier_filter()
-    outlier_filter.set_mean_k(10) #20
+    outlier_filter.set_mean_k(20) 
     x = .1
     outlier_filter.set_std_dev_mul_thresh(x)
     cloud_filtered = outlier_filter.filter()
@@ -80,26 +80,24 @@ def pcl_callback(pcl_msg):
     passthrough = cloud_filtered.make_passthrough_filter()
     filter_axis = 'z'
     passthrough.set_filter_field_name(filter_axis)
-    axis_min = 0.6 #0.61
-    axis_max = 1.1 #0.9
+    axis_min = 0.6 
+    axis_max = 1.1 
     passthrough.set_filter_limits(axis_min, axis_max)
     # Apply the filter
     cloud_filtered = passthrough.filter()
 
     passthrough2 = cloud_filtered.make_passthrough_filter()
     passthrough2.set_filter_field_name('y')
-    passthrough2.set_filter_limits(-0.5,0.5) #-0.4,0.4
+    passthrough2.set_filter_limits(-0.5,0.5) 
     # Apply the filter
     cloud_filtered = passthrough2.filter()
-    pcl_debug = pcl_to_ros(cloud_filtered)
-    pcl_debug_pub.publish(pcl_debug)
     
     # TODO: RANSAC Plane Segmentation
     seg = cloud_filtered.make_segmenter()
     seg.set_model_type(pcl.SACMODEL_PLANE)
     seg.set_method_type(pcl.SAC_RANSAC)
 
-    max_distance = 0.015; #0.01
+    max_distance = 0.015; 
     seg.set_distance_threshold(max_distance)
 
     inliers, coefficients = seg.segment()
@@ -115,9 +113,9 @@ def pcl_callback(pcl_msg):
     # TODO: Create Cluster-Mask Point Cloud to visualize each cluster separately
     # Create a cluster extraction object
     ec = white_cloud.make_EuclideanClusterExtraction()
-    ec.set_ClusterTolerance(0.05) #0.05
-    ec.set_MinClusterSize(100)      #100
-    ec.set_MaxClusterSize(3000)    #3000
+    ec.set_ClusterTolerance(0.05)   
+    ec.set_MinClusterSize(50)      
+    ec.set_MaxClusterSize(3000)    
 
     ec.set_SearchMethod(tree)
     cluster_indices = ec.Extract()
@@ -161,7 +159,10 @@ def pcl_callback(pcl_msg):
         normals = get_normals(sample_cloud)
         nhists = compute_normal_histograms(normals)
         feature = np.concatenate((chists, nhists))
-
+        print(nhists.size)
+        print(chists.size)
+        f = feature.reshape(1,-1);
+        print(f.size)
         # Make the prediction, retrieve the label for the result
         # and add it to detected_objects_labels list
         prediction = clf.predict(scaler.transform(feature.reshape(1,-1)))
@@ -198,7 +199,7 @@ def pr2_mover(object_list):
 
     # TODO: Initialize variables
     test_scene_num = Int32()
-    test_scene_num.data = 3;
+    test_scene_num.data = 1;
     
     dict_list = []
     labels = []
@@ -261,7 +262,7 @@ def pr2_mover(object_list):
         yaml_dict = make_yaml_dict(test_scene_num, arm_name, object_name, pick_pose, place_pose)
         dict_list.append(yaml_dict)
     
-    send_to_yaml('output_3.yaml',dict_list)
+    send_to_yaml('output_1.yaml',dict_list)
     # Wait for 'pick_place_routine' service to come up
     rospy.wait_for_service('pick_place_routine')
 
@@ -287,17 +288,25 @@ if __name__ == '__main__':
     rospy.init_node('clustering', anonymous=True)
     
     # TODO: Create Subscribers
+    # Obtain image data from the camera
     pcl_sub = rospy.Subscriber("/pr2/world/points",pc2.PointCloud2, pcl_callback, queue_size=1)
+    
     # TODO: Create Publishers
-    pcl_debug_pub = rospy.Publisher("/pcl_debug", PointCloud2, queue_size=10)
+    # Publish objects obtained from RANSAC
     pcl_objects_pub = rospy.Publisher("/pcl_objects", PointCloud2, queue_size=10)
+
+    # Publish table obtained from RANSAC
     pcl_table_pub = rospy.Publisher("/pcl_table", PointCloud2, queue_size=10)
+    
+    # Publish clustered objects (DBSCAN output)
     pcl_cluster_pub = rospy.Publisher("/pcl_cluster", PointCloud2, queue_size=1)
+
+    # Publish recognized objects
     object_markers_pub = rospy.Publisher("/object_markers", Marker, queue_size=1)
     detected_objects_pub = rospy.Publisher("/detected_objects", DetectedObjectsArray, queue_size=1)
 
     # TODO: Load Model From disk
-    model = pickle.load(open('model3.sav', 'rb'))
+    model = pickle.load(open('model_linear.sav', 'rb'))
     clf = model['classifier']
     encoder = LabelEncoder()
     encoder.classes_ = model['classes']
